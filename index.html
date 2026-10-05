@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OmniNeuralSim — Universal Pedagogical Deep Learning Simulator</title>
+  <style>
+    :root {
+      --navy: #0B1329;
+      --navy-card: #0F172A;
+      --teal: #0F8B8D;
+      --crimson: #C8102E;
+      --gold: #FFD700;
+      --purple: #6B2D7B;
+      --text: #F8FAFC;
+      --text-muted: #94A3B8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--navy);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      padding: 24px;
+      line-height: 1.5;
+    }
+    header {
+      max-width: 1200px;
+      margin: 0 auto 24px auto;
+      border-bottom: 1px solid #1E293B;
+      padding-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .badge {
+      background: var(--teal);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    h1 { font-size: 1.8rem; margin-top: 6px; }
+    p.subtitle { color: var(--text-muted); font-size: 0.95rem; }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      max-width: 1200px;
+      margin: 0 auto 20px auto;
+    }
+    .tab-btn {
+      background: #1E293B;
+      color: var(--text-muted);
+      border: 1px solid #334155;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .tab-btn.active {
+      background: var(--teal);
+      color: #fff;
+      border-color: var(--teal);
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .grid-models {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    footer {
+      max-width: 1200px;
+      margin: 40px auto 0 auto;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid #1E293B;
+      padding-top: 16px;
+    }
+  </style>
+  <script type="module" src="/src/index.ts"></script>
+</head>
+<body>
+  <header>
+    <div>
+      <span class="badge">Harvard CSCI E-89 & E-89b SOTA</span>
+      <h1>OmniNeuralSim</h1>
+      <p class="subtitle">Universal Pedagogical Simulator for Multilayer Perceptrons, CNNs, LSTMs, and Transformers</p>
+    </div>
+    <div style="text-align:right;">
+      <span style="font-size:0.85rem; color:var(--text-muted);">Self-Contained Client-Side Web Component</span><br>
+      <code style="background:#1E293B; color:#38BDF8; padding:3px 8px; border-radius:4px; font-size:0.8rem;">&lt;neural-sim model="cnn"&gt;</code>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchModel('cnn')">1. Convolutional Net (CNN & MNIST)</button>
+    <button class="tab-btn" onclick="switchModel('lstm')">2. Recurrent Cell (LSTM & Gates)</button>
+    <button class="tab-btn" onclick="switchModel('transformer')">3. Attention Mechanism (Transformer)</button>
+    <button class="tab-btn" onclick="switchModel('mlp')">4. Multi-Layer Perceptron (Backprop & XOR)</button>
+  </div>
+
+  <main>
+    <div id="sim-container">
+      <neural-sim model="cnn"></neural-sim>
+    </div>
+  </main>
+
+  <footer>
+    <p>OmniNeuralSim Engine v1.0.0 — Designed for Harvard CSCI E-89 / E-89b & Advanced Deep Learning.</p>
+    <p>Zero-backend client execution via TypeScript Tensor Engine & SVG/Canvas vector visualizers.</p>
+  </footer>
+
+  <script>
+    function switchModel(type) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      const container = document.getElementById('sim-container');
+      container.innerHTML = `<neural-sim model="${type}"></neural-sim>`;
+    }
+  </script>
+</body>
+</html>

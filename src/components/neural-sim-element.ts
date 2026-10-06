@@ -13,6 +13,7 @@ import { SVGDiagramRenderer } from "../renderers/svg-diagram.ts";
 import { CanvasVisualizer } from "../renderers/interactive-canvas.ts";
 import { Tensor } from "../core/tensor.ts";
 import { LayerSpec } from "../core/ir.ts";
+import { PEDAGOGY_REGISTRY } from "../core/pedagogy.ts";
 
 export class NeuralSimElement extends HTMLElement {
   private timer: any = null;
@@ -128,6 +129,15 @@ export class NeuralSimElement extends HTMLElement {
           <div style="font-size:11px; font-weight:700; color:#FFD700; margin-bottom:6px; letter-spacing:0.5px;">PEDAGOGICAL MATHEMATICAL STEP TRACE:</div>
           <div class="trace-output" style="font-size:12px; font-family:monospace; color:#A5B4FC; line-height:1.6;"></div>
         </div>
+
+        <!-- 100% Comprehensive Pedagogical Master Guide Panel -->
+        <div class="pedagogical-guide-panel" style="margin-top:18px; background:#020617; border:1px solid #334155; border-radius:10px; padding:18px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1E293B; padding-bottom:10px; margin-bottom:14px; flex-wrap:wrap; gap:8px;">
+            <div style="font-size:12px; font-weight:700; color:#38BDF8; letter-spacing:0.5px;">📖 PEDAGOGICAL MASTER GUIDE: HOW THIS NETWORK ARCHITECTURE LEARNS</div>
+            <span class="guide-context-badge" style="background:#1E293B; color:#CBD5E1; font-size:10.5px; padding:3px 10px; border-radius:4px; font-family:monospace;"></span>
+          </div>
+          <div class="guide-content" style="font-size:12px; color:#E2E8F0; line-height:1.6;"></div>
+        </div>
       </div>
     `;
 
@@ -150,6 +160,42 @@ export class NeuralSimElement extends HTMLElement {
     const playBtn = this.querySelector(".btn-play") as HTMLButtonElement;
     const resetBtn = this.querySelector(".btn-reset") as HTMLButtonElement;
     const breadcrumb = this.querySelector(".state-breadcrumb") as HTMLDivElement;
+    const guideContent = this.querySelector(".guide-content") as HTMLDivElement;
+    const guideBadge = this.querySelector(".guide-context-badge") as HTMLSpanElement;
+
+    // Render 100% Comprehensive Pedagogical Master Guide
+    const pedagogy = PEDAGOGY_REGISTRY[type] || PEDAGOGY_REGISTRY["mlp"];
+    if (guideBadge) guideBadge.innerText = pedagogy.syllabusContext;
+    if (guideContent) {
+      guideContent.innerHTML = `
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:14px;">
+          <div style="background:#0F172A; padding:12px; border-radius:6px; border-left:3px solid #0F8B8D;">
+            <div style="font-weight:700; color:#38BDF8; margin-bottom:4px; font-size:11.5px;">1. Core Intuition & Problem Statement:</div>
+            <p style="margin:0; font-size:11.5px; color:#CBD5E1; line-height:1.5;">${pedagogy.problemStatement}</p>
+          </div>
+          <div style="background:#0F172A; padding:12px; border-radius:6px; border-left:3px solid #6B2D7B;">
+            <div style="font-weight:700; color:#E2E8F0; margin-bottom:4px; font-size:11.5px;">2. Visual Interface & Color Decoding:</div>
+            <p style="margin:0 0 4px 0; font-size:11px; color:#CBD5E1;"><b>Diagram:</b> ${pedagogy.visualGuide.diagramElements}</p>
+            <p style="margin:0 0 4px 0; font-size:11px; color:#CBD5E1;"><b>Canvas:</b> ${pedagogy.visualGuide.canvasMechanics}</p>
+            <div style="margin:4px 0 0 0; font-size:10.5px; color:#94A3B8; font-family:monospace; line-height:1.4;">${pedagogy.visualGuide.colorSignaling.replace(/\n/g, '<br>')}</div>
+          </div>
+        </div>
+
+        <div style="background:#0F172A; padding:12px; border-radius:6px; border-left:3px solid #FFD700; margin-bottom:14px;">
+          <div style="font-weight:700; color:#FFD700; margin-bottom:6px; font-size:11.5px;">3. Mathematical Mechanics & Formulas:</div>
+          <div style="font-family:monospace; font-size:11px; color:#F8FAFC; background:#020617; padding:10px; border-radius:4px; margin-bottom:6px; white-space:pre-wrap; border:1px solid #1E293B;">${pedagogy.mathematicalMechanics.forwardPass}</div>
+          <div style="font-family:monospace; font-size:11px; color:#F8FAFC; background:#020617; padding:10px; border-radius:4px; margin-bottom:6px; white-space:pre-wrap; border:1px solid #1E293B;">${pedagogy.mathematicalMechanics.lossAndUpdate}</div>
+          <div style="font-size:11px; color:#38BDF8; font-family:monospace; padding-top:4px;"><b>Tensor Shapes:</b> ${pedagogy.mathematicalMechanics.tensorShapes}</div>
+        </div>
+
+        <div style="background:#0F172A; padding:12px; border-radius:6px; border-left:3px solid #10B981;">
+          <div style="font-weight:700; color:#10B981; margin-bottom:4px; font-size:11.5px;">4. Academic Takeaways & Exam Pro-Tips:</div>
+          <ul style="margin:0; padding-left:18px; font-size:11.5px; color:#CBD5E1; line-height:1.5;">
+            ${pedagogy.pedagogicalTakeaways.map(t => `<li style="margin-bottom:4px;">${t}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    }
 
     // Standard generous SVG dimension to prevent any label collisions
     const SVG_W = 620;

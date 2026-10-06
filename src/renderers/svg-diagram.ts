@@ -1,7 +1,7 @@
 /**
  * OmniNeuralSim - SOTA SVG Architecture & Flow Renderer
- * High-definition vector diagrams with animated pulse flows,
- * backward-propagation gradient paths, and 3D tensor shape cubes.
+ * High-definition vector diagrams with ample spacing, responsive viewBox,
+ * non-overlapping badges, animated pulse flows, and clean typography.
  */
 
 import { LayerSpec } from "../core/ir.ts";
@@ -17,20 +17,24 @@ export interface NodePosition {
 export class SVGDiagramRenderer {
   static renderNetwork(
     layers: LayerSpec[],
-    width = 800,
+    width = 640,
     height = 360,
     activeLayerIndex = -1,
     flowPhase: "idle" | "forward" | "backward" | "update" = "forward"
   ): string {
     const numLayers = layers.length;
+    // Generous horizontal spacing
     const xStep = width / (numLayers + 1);
 
     const nodesByLayer: NodePosition[][] = [];
+    const topMargin = 68;
+    const bottomMargin = 55;
+    const usableHeight = height - topMargin - bottomMargin;
 
     layers.forEach((layer, lIdx) => {
       const x = (lIdx + 1) * xStep;
       const count = Math.min(layer.outShape[layer.outShape.length - 1] || 4, 8);
-      const yStep = height / (count + 1);
+      const yStep = usableHeight / (count + 1);
       const layerNodes: NodePosition[] = [];
 
       for (let n = 0; n < count; n++) {
@@ -38,7 +42,7 @@ export class SVGDiagramRenderer {
           layerIndex: lIdx,
           nodeIndex: n,
           x,
-          y: (n + 1) * yStep,
+          y: topMargin + (n + 1) * yStep,
           label: `${layer.name} [${n}]`
         });
       }
@@ -49,11 +53,11 @@ export class SVGDiagramRenderer {
     const flowColor = isBackprop ? "#C8102E" : "#0F8B8D";
     const flowDashDir = isBackprop ? "reverseFlow" : "flowPulse";
 
-    let svg = `<svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}" style="background: radial-gradient(circle at 50% 50%, #0F172A 0%, #020617 100%); border-radius:12px; font-family:system-ui, -apple-system, sans-serif;">`;
+    let svg = `<svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}" preserveAspectRatio="xMidYMid meet" style="background: radial-gradient(circle at 50% 50%, #0F172A 0%, #020617 100%); border-radius:12px; font-family:system-ui, -apple-system, sans-serif; display:block;">`;
     svg += `<defs>
       <linearGradient id="edgeGradFwd" x1="0%" y1="0%" x2="100%" y2="0%">
-        <stop offset="0%" stop-color="#0F8B8D" stop-opacity="0.6"/>
-        <stop offset="100%" stop-color="#6B2D7B" stop-opacity="0.8"/>
+        <stop offset="0%" stop-color="#0F8B8D" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#6B2D7B" stop-opacity="0.7"/>
       </linearGradient>
       <linearGradient id="edgeGradBwd" x1="100%" y1="0%" x2="0%" y2="0%">
         <stop offset="0%" stop-color="#C8102E" stop-opacity="0.8"/>
@@ -72,7 +76,7 @@ export class SVGDiagramRenderer {
       </style>
     </defs>`;
 
-    // 1. Draw connection lines
+    // 1. Connection lines
     for (let l = 0; l < nodesByLayer.length - 1; l++) {
       const fromNodes = nodesByLayer[l];
       const toNodes = nodesByLayer[l + 1];
@@ -89,21 +93,29 @@ export class SVGDiagramRenderer {
       }
     }
 
-    // 2. Draw Layer Titles, Badges, and Dimensions
+    // 2. Layer Titles, Badges, and Dimensions
     layers.forEach((layer, lIdx) => {
       const x = (lIdx + 1) * xStep;
       const isActive = lIdx === activeLayerIndex;
       const titleColor = isActive ? "#FFD700" : "#E2E8F0";
 
-      // Header Tag
-      svg += `<text x="${x}" y="22" fill="${titleColor}" font-size="12" font-weight="700" text-anchor="middle">${layer.name}</text>`;
+      // Truncate title if very long
+      let displayName = layer.name;
+      if (displayName.length > 20) {
+        displayName = displayName.slice(0, 18) + "…";
+      }
+
+      // Title
+      svg += `<text x="${x}" y="22" fill="${titleColor}" font-size="11.5" font-weight="700" text-anchor="middle">${displayName}</text>`;
+
       // Dimension Badge
-      svg += `<rect x="${x - 45}" y="30" width="90" height="18" rx="4" fill="#1E293B" stroke="${isActive ? '#FFD700' : '#334155'}" stroke-width="1"/>`;
+      const badgeW = 76;
+      svg += `<rect x="${x - badgeW / 2}" y="30" width="${badgeW}" height="18" rx="4" fill="#1E293B" stroke="${isActive ? '#FFD700' : '#334155'}" stroke-width="1"/>`;
       svg += `<text x="${x}" y="43" fill="#38BDF8" font-size="10" font-family="monospace" font-weight="600" text-anchor="middle">[${layer.outShape.join("×")}]</text>`;
 
-      // Parameter count badge at bottom
+      // Parameter count badge at bottom (above flow badge)
       if (layer.paramsCount > 0) {
-        svg += `<text x="${x}" y="${height - 12}" fill="#94A3B8" font-size="10" font-family="monospace" text-anchor="middle">${layer.paramsCount.toLocaleString()} params</text>`;
+        svg += `<text x="${x}" y="${height - 36}" fill="#94A3B8" font-size="10" font-family="monospace" text-anchor="middle">${layer.paramsCount.toLocaleString()} params</text>`;
       }
     });
 
@@ -120,14 +132,15 @@ export class SVGDiagramRenderer {
 
       for (const node of layerNodes) {
         const glowAttr = isActive ? 'filter="url(#glowGold)" class="active-pulse"' : "";
-        svg += `<circle cx="${node.x}" cy="${node.y}" r="${isActive ? 11 : 9}" fill="${fillColor}" stroke="#ffffff" stroke-width="1.8" ${glowAttr}/>`;
+        svg += `<circle cx="${node.x}" cy="${node.y}" r="${isActive ? 11 : 8.5}" fill="${fillColor}" stroke="#ffffff" stroke-width="1.8" ${glowAttr}/>`;
       }
     });
 
-    // Flow direction indicator badge
-    svg += `<g transform="translate(${width / 2 - 80}, ${height - 35})">
-      <rect width="160" height="22" rx="11" fill="#1E293B" stroke="${flowColor}" stroke-width="1.2"/>
-      <text x="80" y="15" fill="${flowColor}" font-size="10" font-weight="700" text-anchor="middle" letter-spacing="0.5">
+    // Flow direction indicator badge at the very bottom
+    const badgeWidth = 190;
+    svg += `<g transform="translate(${width / 2 - badgeWidth / 2}, ${height - 24})">
+      <rect width="${badgeWidth}" height="20" rx="10" fill="#1E293B" stroke="${flowColor}" stroke-width="1.2"/>
+      <text x="${badgeWidth / 2}" y="14" fill="${flowColor}" font-size="9.5" font-weight="700" text-anchor="middle" letter-spacing="0.5">
         ${isBackprop ? "◀ BACKPROPAGATION GRADIENTS" : "FORWARD INFERENCE FLOW ▶"}
       </text>
     </g>`;

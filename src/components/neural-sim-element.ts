@@ -1,7 +1,7 @@
 /**
  * OmniNeuralSim - SOTA Pedagogical <neural-sim> Web Component
- * High-definition interactive simulator with step-by-step state machine,
- * animated pulse flows, and live mathematical insight generation.
+ * High-definition interactive simulator with generous spacing,
+ * step-by-step state machine, animated pulse flows, and live mathematical insight generation.
  */
 
 import { MLP } from "../models/mlp.ts";
@@ -69,15 +69,15 @@ export class NeuralSimElement extends HTMLElement {
     const course = this.getAttribute("course") || "Harvard CSCI E-89 / E-89b SOTA";
 
     this.innerHTML = `
-      <div class="omni-sim-card" style="font-family:system-ui, -apple-system, sans-serif; background:#0B1329; color:#F8FAFC; border:1px solid #1E293B; border-radius:12px; padding:20px; margin:20px 0; box-shadow:0 12px 30px -5px rgba(0,0,0,0.5);">
+      <div class="omni-sim-card" style="font-family:system-ui, -apple-system, sans-serif; background:#0B1329; color:#F8FAFC; border:1px solid #1E293B; border-radius:12px; padding:22px; margin:20px 0; box-shadow:0 12px 30px -5px rgba(0,0,0,0.5);">
         <!-- Top Toolbar -->
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1E293B; padding-bottom:12px; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1E293B; padding-bottom:14px; margin-bottom:16px; flex-wrap:wrap; gap:12px;">
           <div>
             <span style="background:#0F8B8D; color:#fff; font-size:11px; font-weight:700; text-transform:uppercase; padding:3px 8px; border-radius:4px; letter-spacing:0.5px;">${course}</span>
-            <h3 style="margin:6px 0 0 0; font-size:1.25rem; color:#FFFFFF;">${customTitle}</h3>
+            <h3 style="margin:6px 0 0 0; font-size:1.35rem; color:#FFFFFF;">${customTitle}</h3>
           </div>
-          <div style="display:flex; gap:8px; align-items:center;">
-            <select class="sim-model-selector" style="background:#1E293B; color:#38BDF8; border:1px solid #475569; border-radius:6px; padding:6px 10px; font-size:12px; font-weight:600; cursor:pointer;">
+          <div style="display:flex; gap:10px; align-items:center;">
+            <select class="sim-model-selector" style="background:#1E293B; color:#38BDF8; border:1px solid #475569; border-radius:6px; padding:7px 12px; font-size:12.5px; font-weight:600; cursor:pointer;">
               <option value="mlp" ${modelType === "mlp" ? "selected" : ""}>1. MLP & Backprop (W1)</option>
               <option value="lstm" ${modelType === "lstm" ? "selected" : ""}>2. Recurrent LSTM & Gates (W2)</option>
               <option value="cnn" ${modelType === "cnn" ? "selected" : ""}>3. Conv2D & MNIST (W3 / DL W5)</option>
@@ -92,16 +92,16 @@ export class NeuralSimElement extends HTMLElement {
               <option value="transformer" ${modelType === "transformer" ? "selected" : ""}>12. Transformers & Attention (W12)</option>
               <option value="optimizers" ${modelType === "optimizers" ? "selected" : ""}>13. Optimizers & Loss Landscapes (DL W3)</option>
             </select>
-            <button class="btn-play" style="background:#1E293B; color:#38BDF8; border:1px solid #38BDF8; border-radius:6px; padding:6px 12px; font-size:12px; font-weight:600; cursor:pointer;">▶ Auto</button>
-            <button class="btn-step" style="background:#0F8B8D; color:#FFFFFF; border:none; border-radius:6px; padding:6px 14px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 0 10px rgba(15,139,141,0.4);">Step Forward ⏭</button>
-            <button class="btn-reset" style="background:#C8102E; color:#FFFFFF; border:none; border-radius:6px; padding:6px 12px; font-size:12px; cursor:pointer;">Reset</button>
+            <button class="btn-play" style="background:#1E293B; color:#38BDF8; border:1px solid #38BDF8; border-radius:6px; padding:7px 14px; font-size:12.5px; font-weight:600; cursor:pointer;">▶ Auto</button>
+            <button class="btn-step" style="background:#0F8B8D; color:#FFFFFF; border:none; border-radius:6px; padding:7px 16px; font-size:12.5px; font-weight:700; cursor:pointer; box-shadow:0 0 12px rgba(15,139,141,0.4);">Step Forward ⏭</button>
+            <button class="btn-reset" style="background:#C8102E; color:#FFFFFF; border:none; border-radius:6px; padding:7px 12px; font-size:12.5px; cursor:pointer;">Reset</button>
           </div>
         </div>
 
         <!-- State Breadcrumb Bar -->
-        <div class="state-breadcrumb" style="display:flex; gap:6px; align-items:center; margin-bottom:14px; background:#020617; padding:8px 12px; border-radius:6px; border:1px solid #1E293B; overflow-x:auto; font-size:11px; font-family:monospace;">
+        <div class="state-breadcrumb" style="display:flex; gap:8px; align-items:center; margin-bottom:16px; background:#020617; padding:10px 14px; border-radius:8px; border:1px solid #1E293B; overflow-x:auto; font-size:11.5px; font-family:monospace;">
           <span style="color:#94A3B8; font-weight:700;">PHASE:</span>
-          <span class="crumb-step" style="background:#0F8B8D; color:#fff; padding:2px 8px; border-radius:4px;">1. INFERENCE</span>
+          <span class="crumb-step" style="background:#0F8B8D; color:#fff; padding:3px 10px; border-radius:4px;">1. INFERENCE</span>
           <span style="color:#475569;">→</span>
           <span class="crumb-step" style="color:#64748B;">2. LOSS</span>
           <span style="color:#475569;">→</span>
@@ -110,21 +110,21 @@ export class NeuralSimElement extends HTMLElement {
           <span class="crumb-step" style="color:#64748B;">4. UPDATE</span>
         </div>
 
-        <!-- Viewport (Diagram + Canvas) -->
-        <div class="sim-viewport" style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
-          <div class="sim-diagram-panel" style="background:#020617; border-radius:8px; padding:12px; border:1px solid #1E293B;">
-            <div style="font-size:12px; font-weight:700; color:#94A3B8; margin-bottom:8px; letter-spacing:0.5px;">ACTIVE NETWORK ARCHITECTURE & DATA FLOW</div>
-            <div class="diagram-host"></div>
+        <!-- Viewport (Spacious Layout: Diagram + Canvas) -->
+        <div class="sim-viewport" style="display:grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap:20px; align-items:stretch;">
+          <div class="sim-diagram-panel" style="background:#020617; border-radius:10px; padding:14px; border:1px solid #1E293B; min-height:360px; display:flex; flex-direction:column;">
+            <div style="font-size:12px; font-weight:700; color:#94A3B8; margin-bottom:10px; letter-spacing:0.5px;">ACTIVE NETWORK ARCHITECTURE & DATA FLOW</div>
+            <div class="diagram-host" style="flex:1; display:flex; align-items:center; justify-content:center;"></div>
           </div>
-          <div class="sim-vis-panel" style="background:#020617; border-radius:8px; padding:12px; border:1px solid #1E293B; display:flex; flex-direction:column; align-items:center;">
-            <div style="font-size:12px; font-weight:700; color:#94A3B8; margin-bottom:8px; width:100%; letter-spacing:0.5px;">LIVE ACTIVATIONS & COMPUTATIONAL MECHANICS</div>
-            <canvas class="sim-canvas" width="340" height="250" style="border-radius:6px; background:#000; width:100%; max-width:340px; height:250px;"></canvas>
+          <div class="sim-vis-panel" style="background:#020617; border-radius:10px; padding:14px; border:1px solid #1E293B; display:flex; flex-direction:column; align-items:center; min-height:360px;">
+            <div style="font-size:12px; font-weight:700; color:#94A3B8; margin-bottom:10px; width:100%; letter-spacing:0.5px;">LIVE ACTIVATIONS & COMPUTATIONAL MECHANICS</div>
+            <canvas class="sim-canvas" width="460" height="320" style="border-radius:8px; background:#000; width:100%; height:320px; display:block;"></canvas>
             <div class="sim-metrics" style="width:100%; margin-top:10px; font-size:12px; font-family:monospace; color:#E2E8F0;"></div>
           </div>
         </div>
 
         <!-- Pedagogical Execution Trace -->
-        <div class="sim-trace-panel" style="margin-top:16px; background:#020617; border:1px solid #1E293B; border-radius:8px; padding:14px;">
+        <div class="sim-trace-panel" style="margin-top:18px; background:#020617; border:1px solid #1E293B; border-radius:8px; padding:14px;">
           <div style="font-size:11px; font-weight:700; color:#FFD700; margin-bottom:6px; letter-spacing:0.5px;">PEDAGOGICAL MATHEMATICAL STEP TRACE:</div>
           <div class="trace-output" style="font-size:12px; font-family:monospace; color:#A5B4FC; line-height:1.6;"></div>
         </div>
@@ -150,6 +150,10 @@ export class NeuralSimElement extends HTMLElement {
     const playBtn = this.querySelector(".btn-play") as HTMLButtonElement;
     const resetBtn = this.querySelector(".btn-reset") as HTMLButtonElement;
     const breadcrumb = this.querySelector(".state-breadcrumb") as HTMLDivElement;
+
+    // Standard generous SVG dimension to prevent any label collisions
+    const SVG_W = 620;
+    const SVG_H = 340;
 
     let advanceStep: () => void = () => {};
 
@@ -186,7 +190,7 @@ export class NeuralSimElement extends HTMLElement {
           phase === "forward_1" ? 1 : phase === "forward_2" ? 2 : phase === "loss" ? 3 : phase === "backward_out" ? 3 : phase === "backward_hidden" ? 1 : -1;
         const flowMode = phase.startsWith("backward") ? "backward" : "forward";
 
-        diagramHost.innerHTML = SVGDiagramRenderer.renderNetwork(mlpLayers, 380, 210, activeLayer, flowMode);
+        diagramHost.innerHTML = SVGDiagramRenderer.renderNetwork(mlpLayers, SVG_W, SVG_H, activeLayer, flowMode);
 
         const { grid } = mlp.evaluateGrid(30, 4);
         CanvasVisualizer.renderDecisionBoundary(
@@ -195,10 +199,9 @@ export class NeuralSimElement extends HTMLElement {
           X.map((pt, i) => ({ x: pt[0], y: pt[1], label: Y[i][0] }))
         );
 
-        // Update Trace & Breadcrumbs
         breadcrumb.innerHTML = `
-          <span style="color:#94A3B8; font-weight:700;">STEP ${this.currentStep + 1} (${phase.toUpperCase()}):</span>
-          <span style="background:${flowMode === 'backward' ? '#C8102E' : '#0F8B8D'}; color:#fff; padding:2px 8px; border-radius:4px;">
+          <span style="color:#94A3B8; font-weight:700;">STEP ${this.currentStep + 1}:</span>
+          <span style="background:${flowMode === 'backward' ? '#C8102E' : '#0F8B8D'}; color:#fff; padding:3px 10px; border-radius:4px;">
             ${phase === 'forward_1' ? '1. LAYER 1 LINEAR + TANH' : phase === 'forward_2' ? '2. LAYER 2 LINEAR + TANH' : phase === 'loss' ? '3. SIGMOID + MSE LOSS' : phase === 'backward_out' ? '4. BACKPROP δ_out' : phase === 'backward_hidden' ? '5. BACKPROP δ_hidden' : '6. WEIGHT GRADIENT UPDATE'}
           </span>
         `;
@@ -235,11 +238,11 @@ export class NeuralSimElement extends HTMLElement {
         const cur = history[tIdx];
 
         diagramHost.innerHTML = SVGDiagramRenderer.renderNetwork([
-          { id: "x", name: `Input x_${tIdx}`, type: "dense", inShape: [4], outShape: [4], paramsCount: 0 },
+          { id: "x", name: `Token Input x_${tIdx}`, type: "dense", inShape: [4], outShape: [4], paramsCount: 0 },
           { id: "gates", name: "Gates [f, i, c̃, o]", type: "lstm_cell", inShape: [4], outShape: [16], paramsCount: 144 },
           { id: "c", name: "Cell State c_t", type: "lstm_cell", inShape: [4], outShape: [4], paramsCount: 0 },
           { id: "h", name: "Hidden State h_t", type: "lstm_cell", inShape: [4], outShape: [4], paramsCount: 0 }
-        ], 380, 210, 1, "forward");
+        ], SVG_W, SVG_H, 1, "forward");
 
         CanvasVisualizer.renderLSTMConveyorBelt(canvas, cur.t, cur.inputToken, {
           f: cur.f_gate[0],
@@ -252,7 +255,7 @@ export class NeuralSimElement extends HTMLElement {
 
         breadcrumb.innerHTML = `
           <span style="color:#94A3B8; font-weight:700;">SEQUENCE STEP:</span>
-          <span style="background:#0F8B8D; color:#fff; padding:2px 8px; border-radius:4px;">Token ${tIdx + 1}/${history.length}: "${cur.inputToken}"</span>
+          <span style="background:#0F8B8D; color:#fff; padding:3px 10px; border-radius:4px;">Token ${tIdx + 1}/${history.length}: "${cur.inputToken}"</span>
         `;
 
         traceOutput.innerHTML = `• <b>Step t=${cur.t} ("${cur.inputToken}"):</b><br>` +
@@ -270,7 +273,6 @@ export class NeuralSimElement extends HTMLElement {
     // ==========================================
     else if (type === "cnn") {
       const cnn = new CNNModel();
-      // Generate synthetic 28x28 digit grid with a stroke
       const imageGrid: number[][] = Array(28).fill(0).map(() => Array(28).fill(0));
       for (let r = 5; r < 23; r++) {
         imageGrid[r][13] = 0.9;
@@ -286,7 +288,6 @@ export class NeuralSimElement extends HTMLElement {
       ];
 
       advanceStep = () => {
-        // Step sliding kernel position across 26x26 valid grid
         const kRow = 4 + (this.currentStep % 18);
         const kCol = 8 + (Math.floor(this.currentStep / 2) % 12);
 
@@ -295,13 +296,13 @@ export class NeuralSimElement extends HTMLElement {
           { id: "conv1", name: "Conv2D (3x3)", type: "conv2d", inShape: [28, 28, 1], outShape: [26, 26, 32], paramsCount: 320 },
           { id: "pool", name: "MaxPooling2D", type: "maxpool2d", inShape: [26, 26, 32], outShape: [13, 13, 32], paramsCount: 0 },
           { id: "out", name: "Dense Head", type: "dense", inShape: [576], outShape: [10], paramsCount: 37578 }
-        ], 380, 210, 1, "forward");
+        ], SVG_W, SVG_H, 1, "forward");
 
         const res = CanvasVisualizer.renderCNNKernelSlide(canvas, imageGrid, kernelGrid, { row: kRow, col: kCol });
 
         breadcrumb.innerHTML = `
           <span style="color:#94A3B8; font-weight:700;">KERNEL SLIDE:</span>
-          <span style="background:#FFD700; color:#0B1329; font-weight:700; padding:2px 8px; border-radius:4px;">Receptive Window [${kRow}:${kRow+3}, ${kCol}:${kCol+3}]</span>
+          <span style="background:#FFD700; color:#0B1329; font-weight:700; padding:3px 10px; border-radius:4px;">Receptive Window [${kRow}:${kRow+3}, ${kCol}:${kCol+3}]</span>
         `;
 
         traceOutput.innerHTML = `• <b>Convolving at position (${kRow}, ${kCol}):</b><br>` +
@@ -317,7 +318,7 @@ export class NeuralSimElement extends HTMLElement {
     // 4. N-grams & BoW Distribution (W4)
     // ==========================================
     else if (type === "ngrams") {
-      const stream = ["deep", "learning", "models", "process", "language", "tokens", "with", "neural", "attention", "unknown_word_1", "unknown_word_2"];
+      const stream = ["deep", "learning", "models", "process", "language", "tokens", "with", "neural", "attention", "unknown_1", "unknown_2"];
       const vocab: Record<string, number> = { "deep": 0, "learning": 1, "models": 2, "process": 3, "language": 4, "tokens": 5, "with": 6, "neural": 7, "attention": 8, "<UNK>": 9 };
       const counts: Record<string, number> = { "deep": 1, "learning": 1, "models": 1, "language": 1, "<UNK>": 0 };
 
@@ -331,27 +332,27 @@ export class NeuralSimElement extends HTMLElement {
           { id: "text", name: `Token: "${curWord}"`, type: "dense", inShape: [1], outShape: [1], paramsCount: 0 },
           { id: "hash", name: "Vocabulary Hash Table", type: "dense", inShape: [1], outShape: [10], paramsCount: 0 },
           { id: "bow", name: "BoW Frequency Vector", type: "dense", inShape: [10], outShape: [10], paramsCount: 0 }
-        ], 380, 210, isOov ? 2 : 1, isOov ? "backward" : "forward");
+        ], SVG_W, SVG_H, isOov ? 2 : 1, isOov ? "backward" : "forward");
 
         const ctx = canvas.getContext("2d");
         if (ctx) {
           ctx.fillStyle = "#020617"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = "#38BDF8"; ctx.font = "bold 12px monospace";
-          ctx.fillText(`STREAMING BoW COUNTER (Active: "${curWord}")`, 15, 24);
+          ctx.fillStyle = "#38BDF8"; ctx.font = "bold 13px monospace";
+          ctx.fillText(`STREAMING BoW COUNTER (Active: "${curWord}")`, 20, 26);
 
           const keys = Object.keys(counts);
           keys.forEach((k, idx) => {
             const isOovKey = k === "<UNK>";
             ctx.fillStyle = isOovKey ? "#C8102E" : "#0F8B8D";
-            ctx.fillRect(15, 45 + idx * 26, counts[k] * 24, 18);
+            ctx.fillRect(20, 48 + idx * 26, counts[k] * 32, 19);
             ctx.fillStyle = "#FFF"; ctx.font = "11px monospace";
-            ctx.fillText(`${k}: ${counts[k]}`, 22, 59 + idx * 26);
+            ctx.fillText(`${k}: ${counts[k]}`, 28, 62 + idx * 26);
           });
         }
 
         breadcrumb.innerHTML = `
           <span style="color:#94A3B8; font-weight:700;">TOKEN DISPATCH:</span>
-          <span style="background:${isOov ? '#C8102E' : '#0F8B8D'}; color:#fff; padding:2px 8px; border-radius:4px;">"${curWord}" → ${isOov ? '<UNK> ROUTE' : 'VOCAB HIT'}</span>
+          <span style="background:${isOov ? '#C8102E' : '#0F8B8D'}; color:#fff; padding:3px 10px; border-radius:4px;">"${curWord}" → ${isOov ? '<UNK> ROUTE' : 'VOCAB HIT'}</span>
         `;
 
         traceOutput.innerHTML = `• <b>Token Processing:</b> "${curWord}"<br>` +
@@ -378,46 +379,43 @@ export class NeuralSimElement extends HTMLElement {
 
         diagramHost.innerHTML = SVGDiagramRenderer.renderNetwork([
           { id: "onehot", name: "One-Hot Words", type: "dense", inShape: [10000], outShape: [300], paramsCount: 3000000 },
-          { id: "embed", name: "Dense Embedding Space", type: "dense", inShape: [300], outShape: [300], paramsCount: 0 },
+          { id: "embed", name: "Embedding Space", type: "dense", inShape: [300], outShape: [300], paramsCount: 0 },
           { id: "proj", name: "2D t-SNE Projection", type: "dense", inShape: [300], outShape: [2], paramsCount: 600 }
-        ], 380, 210, 1, "forward");
+        ], SVG_W, SVG_H, 1, "forward");
 
         const ctx = canvas.getContext("2d");
         if (ctx) {
           ctx.fillStyle = "#020617"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = "#38BDF8"; ctx.font = "bold 12px monospace";
-          ctx.fillText("WORD2VEC VECTOR SPACE PROJECTION", 15, 24);
+          ctx.fillStyle = "#38BDF8"; ctx.font = "bold 13px monospace";
+          ctx.fillText("WORD2VEC VECTOR SPACE PROJECTION", 20, 26);
 
-          // Draw axes
           const cx = canvas.width / 2;
           const cy = canvas.height / 2;
           ctx.strokeStyle = "#334155"; ctx.lineWidth = 1;
           ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, canvas.height); ctx.moveTo(0, cy); ctx.lineTo(canvas.width, cy); ctx.stroke();
 
-          // Points
           const pts = [
-            { label: item.u, x: cx - 60, y: cy - 40, col: "#38BDF8" },
-            { label: item.v, x: cx - 80, y: cy + 30, col: "#94A3B8" },
-            { label: item.w, x: cx + 40, y: cy + 40, col: "#0F8B8D" },
-            { label: item.target, x: cx + 60, y: cy - 30, col: "#FFD700" }
+            { label: item.u, x: cx - 90, y: cy - 60, col: "#38BDF8" },
+            { label: item.v, x: cx - 110, y: cy + 40, col: "#94A3B8" },
+            { label: item.w, x: cx + 60, y: cy + 50, col: "#0F8B8D" },
+            { label: item.target, x: cx + 80, y: cy - 50, col: "#FFD700" }
           ];
 
           pts.forEach(p => {
-            ctx.beginPath(); ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
+            ctx.beginPath(); ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
             ctx.fillStyle = p.col; ctx.fill();
-            ctx.fillStyle = "#FFF"; ctx.font = "bold 11px sans-serif";
-            ctx.fillText(p.label, p.x + 8, p.y + 4);
+            ctx.fillStyle = "#FFF"; ctx.font = "bold 12px sans-serif";
+            ctx.fillText(p.label, p.x + 10, p.y + 4);
           });
 
-          // Analogy vector
-          ctx.strokeStyle = "#FFD700"; ctx.lineWidth = 2; ctx.setLineDash([4, 2]);
+          ctx.strokeStyle = "#FFD700"; ctx.lineWidth = 2.5; ctx.setLineDash([5, 3]);
           ctx.beginPath(); ctx.moveTo(pts[0].x, pts[0].y); ctx.lineTo(pts[3].x, pts[3].y); ctx.stroke();
           ctx.setLineDash([]);
         }
 
         breadcrumb.innerHTML = `
           <span style="color:#94A3B8; font-weight:700;">VECTOR ARITHMETIC:</span>
-          <span style="background:#0F8B8D; color:#fff; padding:2px 8px; border-radius:4px;">${item.desc}</span>
+          <span style="background:#0F8B8D; color:#fff; padding:3px 10px; border-radius:4px;">${item.desc}</span>
         `;
 
         traceOutput.innerHTML = `• <b>Semantic Geometry:</b> <code>${item.desc}</code><br>` +
@@ -434,52 +432,34 @@ export class NeuralSimElement extends HTMLElement {
       const ae = new AutoencoderModel(10, 2);
 
       advanceStep = () => {
-        const dummyX = Tensor.random([1, 10], 0, 1);
+        const dummyX = Tensor.random([1, 10], 0.1, 0.9);
         const res = ae.forward(dummyX, true);
 
+        // Generous SVG with ample spacing between the 3 layers
         diagramHost.innerHTML = SVGDiagramRenderer.renderNetwork([
-          { id: "in", name: "Input x [10]", type: "dense", inShape: [10], outShape: [16], paramsCount: 160 },
-          { id: "z", name: "Latent Bottleneck z [2]", type: "latent_space", inShape: [16], outShape: [2], paramsCount: 32 },
-          { id: "out", name: "Reconstruction x̂ [10]", type: "dense", inShape: [2], outShape: [10], paramsCount: 160 }
-        ], 380, 210, 1, "forward");
+          { id: "in", name: "Input x", type: "dense", inShape: [10], outShape: [10], paramsCount: 0 },
+          { id: "enc", name: "Encoder Dense", type: "dense", inShape: [10], outShape: [16], paramsCount: 160 },
+          { id: "z", name: "Latent Bottleneck", type: "latent_space", inShape: [16], outShape: [2], paramsCount: 32 },
+          { id: "dec", name: "Decoder Dense", type: "dense", inShape: [2], outShape: [16], paramsCount: 32 },
+          { id: "out", name: "Reconstruction x̂", type: "dense", inShape: [16], outShape: [10], paramsCount: 160 }
+        ], SVG_W, SVG_H, 2, "forward");
 
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          ctx.fillStyle = "#020617"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-          ctx.fillStyle = "#38BDF8"; ctx.font = "bold 12px monospace";
-          ctx.fillText("2D LATENT MANIFOLD BOTTLENECK", 15, 24);
-
-          // Draw latent coordinate grid
-          const cx = canvas.width / 2;
-          const cy = canvas.height / 2;
-          ctx.strokeStyle = "#1E293B";
-          for (let g = -100; g <= 100; g += 25) {
-            ctx.beginPath(); ctx.moveTo(cx + g, 0); ctx.lineTo(cx + g, canvas.height); ctx.stroke();
-            ctx.beginPath(); ctx.moveTo(0, cy + g); ctx.lineTo(canvas.width, cy + g); ctx.stroke();
-          }
-
-          // Point
-          const z1 = res.latent.data[0];
-          const z2 = res.latent.data[1];
-          const px = cx + z1 * 35;
-          const py = cy - z2 * 35;
-
-          ctx.beginPath(); ctx.arc(px, py, 7, 0, Math.PI * 2);
-          ctx.fillStyle = "#FFD700"; ctx.fill();
-
-          ctx.fillStyle = "#FFF"; ctx.font = "11px monospace";
-          ctx.fillText(`z = (${z1.toFixed(2)}, ${z2.toFixed(2)})`, px + 10, py - 6);
-          ctx.fillStyle = "#10B981";
-          ctx.fillText(`Reconstruction Loss MSE: ${res.mse.toFixed(4)}`, 15, 215);
-        }
+        // Rich Latent Manifold with 2D clusters and feature bar comparison
+        CanvasVisualizer.renderLatentManifold(
+          canvas,
+          [res.latent.data[0], res.latent.data[1]],
+          Array.from(dummyX.data),
+          Array.from(res.reconstructed.data),
+          res.mse
+        );
 
         breadcrumb.innerHTML = `
           <span style="color:#94A3B8; font-weight:700;">BOTTLENECK COMPRESSION:</span>
-          <span style="background:#6B2D7B; color:#fff; padding:2px 8px; border-radius:4px;">10D → 2D Latent → 10D Reconstructed</span>
+          <span style="background:#6B2D7B; color:#fff; padding:3px 10px; border-radius:4px;">10D Input → 2D Latent Manifold → 10D Reconstruction</span>
         `;
 
-        traceOutput.innerHTML = `• <b>Compression Step:</b> Latent coordinates $z = [${res.latent.data[0].toFixed(3)}, ${res.latent.data[1].toFixed(3)}]$.<br>` +
-          `&nbsp;&nbsp;Information bottleneck forces the network to learn the lowest-dimensional intrinsic data manifold without identity memorization.`;
+        traceOutput.innerHTML = `• <b>Latent Coordinates:</b> $z = [${res.latent.data[0].toFixed(3)}, ${res.latent.data[1].toFixed(3)}]$<br>` +
+          `&nbsp;&nbsp;Reconstruction error (MSE) = $\\mathbf{${res.mse.toFixed(4)}}$. The 2D bottleneck compresses high-dimensional variance into an interpretable manifold.`;
 
         this.currentStep++;
       };
@@ -495,19 +475,19 @@ export class NeuralSimElement extends HTMLElement {
           { id: "grad", name: "Gradient ∇L", type: "dense", inShape: [2], outShape: [2], paramsCount: 0 },
           { id: "mom", name: "Momentum v_t", type: "dense", inShape: [2], outShape: [2], paramsCount: 0 },
           { id: "adam", name: "Adam m_t / √v_t", type: "dense", inShape: [2], outShape: [2], paramsCount: 0 }
-        ], 380, 210, 2, "forward");
+        ], SVG_W, SVG_H, 2, "forward");
 
         CanvasVisualizer.renderOptimizerContour(canvas, this.currentStep);
 
         breadcrumb.innerHTML = `
           <span style="color:#94A3B8; font-weight:700;">OPTIMIZER RACE:</span>
-          <span style="background:#0F8B8D; color:#fff; padding:2px 8px; border-radius:4px;">Step ${this.currentStep + 1}: Adam vs Momentum vs SGD</span>
+          <span style="background:#0F8B8D; color:#fff; padding:3px 10px; border-radius:4px;">Step ${this.currentStep + 1}: Adam vs Momentum vs SGD</span>
         `;
 
         traceOutput.innerHTML = `• <b>Adam Update Step ${this.currentStep + 1}:</b><br>` +
           `&nbsp;&nbsp;1. 1st Moment: $m_t = \\beta_1 m_{t-1} + (1 - \\beta_1) g_t$<br>` +
           `&nbsp;&nbsp;2. 2nd Moment: $v_t = \\beta_2 v_{t-1} + (1 - \\beta_2) g_t^2$<br>` +
-          `&nbsp;&nbsp;3. Adaptive Descent: $w_{t+1} = w_t - \\frac{\\alpha}{\\sqrt{\\hat{v}_t} + \\epsilon} \\hat{m}_t$. Adam d製品es rapidly along flat ravines.`;
+          `&nbsp;&nbsp;3. Adaptive Descent: $w_{t+1} = w_t - \\frac{\\alpha}{\\sqrt{\\hat{v}_t} + \\epsilon} \\hat{m}_t$. Adam descends rapidly along flat ravines.`;
 
         this.currentStep++;
       };
@@ -526,17 +506,17 @@ export class NeuralSimElement extends HTMLElement {
         const res = transformer.forward(X, true, true);
 
         diagramHost.innerHTML = SVGDiagramRenderer.renderNetwork([
-          { id: "emb", name: "Tokens + PosEnc", type: "embedding", inShape: [6], outShape: [6, 8], paramsCount: 48 },
+          { id: "emb", name: "Token Embedding", type: "embedding", inShape: [6], outShape: [6, 8], paramsCount: 48 },
           { id: "qkv", name: "Q, K, V Linear", type: "dense", inShape: [6, 8], outShape: [6, 8], paramsCount: 192 },
           { id: "attn", name: "Attention Matrix", type: "self_attention", inShape: [6, 8], outShape: [6, 6], paramsCount: 0 },
           { id: "out", name: "Output Projection", type: "dense", inShape: [6, 8], outShape: [6, 8], paramsCount: 64 }
-        ], 380, 210, 2, "forward");
+        ], SVG_W, SVG_H, 2, "forward");
 
         CanvasVisualizer.renderAttentionMatrix(canvas, res.attentionWeights, tokens, queryIdx);
 
         breadcrumb.innerHTML = `
           <span style="color:#94A3B8; font-weight:700;">QUERY FOCUS:</span>
-          <span style="background:#FFD700; color:#0B1329; font-weight:700; padding:2px 8px; border-radius:4px;">Token ${queryIdx + 1}: "${tokens[queryIdx]}"</span>
+          <span style="background:#FFD700; color:#0B1329; font-weight:700; padding:3px 10px; border-radius:4px;">Token ${queryIdx + 1}: "${tokens[queryIdx]}"</span>
         `;
 
         traceOutput.innerHTML = `• <b>Active Query:</b> Token "${tokens[queryIdx]}" attends to preceding context tokens:<br>` +
@@ -549,22 +529,88 @@ export class NeuralSimElement extends HTMLElement {
       advanceStep();
     }
     // ==========================================
-    // Fallback: Model Switcher Handler
+    // 9. Topic Modeling (LDA) (W7)
+    // ==========================================
+    else if (type === "lda") {
+      const topics = [
+        { name: "Topic 1 (NLP / Deep Learning)", words: ["neural", "transformer", "attention", "gradient"], color: "#0F8B8D" },
+        { name: "Topic 2 (Finance & Risk)", words: ["return", "portfolio", "volatility", "arbitrage"], color: "#6B2D7B" },
+        { name: "Topic 3 (Clinical / Healthcare)", words: ["patient", "treatment", "diagnosis", "trial"], color: "#D98E04" }
+      ];
+
+      advanceStep = () => {
+        const activeTIdx = this.currentStep % topics.length;
+        const curTopic = topics[activeTIdx];
+
+        diagramHost.innerHTML = SVGDiagramRenderer.renderNetwork([
+          { id: "alpha", name: "Dirichlet Prior α", type: "dense", inShape: [1], outShape: [3], paramsCount: 0 },
+          { id: "theta", name: "Topic Mixture θ", type: "dense", inShape: [3], outShape: [3], paramsCount: 0 },
+          { id: "beta", name: "Word Distribution β", type: "dense", inShape: [3], outShape: [100], paramsCount: 0 }
+        ], SVG_W, SVG_H, 1, "forward");
+
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.fillStyle = "#020617"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "#38BDF8"; ctx.font = "bold 13px monospace";
+          ctx.fillText("LATENT DIRICHLET ALLOCATION (LDA)", 20, 26);
+
+          topics.forEach((top, idx) => {
+            const isCur = idx === activeTIdx;
+            const y = 55 + idx * 80;
+            ctx.fillStyle = isCur ? "#FFD700" : top.color;
+            ctx.font = "bold 12px sans-serif";
+            ctx.fillText(`${top.name} ${isCur ? '◀ ACTIVE' : ''}`, 20, y);
+
+            top.words.forEach((w, wIdx) => {
+              const wx = 20 + wIdx * 105;
+              ctx.fillStyle = isCur ? "#0F8B8D" : "#1E293B";
+              ctx.fillRect(wx, y + 10, 95, 24);
+              ctx.strokeStyle = "#334155"; ctx.strokeRect(wx, y + 10, 95, 24);
+              ctx.fillStyle = "#FFF"; ctx.font = "11px monospace";
+              ctx.fillText(w, wx + 8, y + 26);
+            });
+          });
+        }
+
+        breadcrumb.innerHTML = `
+          <span style="color:#94A3B8; font-weight:700;">GIBBS SAMPLING:</span>
+          <span style="background:${curTopic.color}; color:#fff; padding:3px 10px; border-radius:4px;">${curTopic.name}</span>
+        `;
+
+        traceOutput.innerHTML = `• <b>Generative Story Step:</b> For document $d$, sampled topic proportions $\\theta_d \\sim \\text{Dir}(\\alpha)$.<br>` +
+          `&nbsp;&nbsp;Active word emissions from $\\beta$: <code>${curTopic.words.join(', ')}</code>.`;
+
+        this.currentStep++;
+      };
+      advanceStep();
+    }
+    // ==========================================
+    // 10. Default / Fallback
     // ==========================================
     else {
       advanceStep = () => {
+        diagramHost.innerHTML = SVGDiagramRenderer.renderNetwork([
+          { id: "in", name: "Input Layer", type: "dense", inShape: [4], outShape: [8], paramsCount: 32 },
+          { id: "h", name: "Hidden Features", type: "dense", inShape: [8], outShape: [8], paramsCount: 64 },
+          { id: "out", name: "Output Head", type: "dense", inShape: [8], outShape: [2], paramsCount: 16 }
+        ], SVG_W, SVG_H, 1, "forward");
+
+        const ctx = canvas.getContext("2d");
+        if (ctx) {
+          ctx.fillStyle = "#020617"; ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = "#38BDF8"; ctx.font = "bold 13px monospace";
+          ctx.fillText(`MODEL ARCHITECTURE: ${type.toUpperCase()}`, 20, 30);
+          ctx.fillStyle = "#E2E8F0"; ctx.font = "12px sans-serif";
+          ctx.fillText(`Step ${this.currentStep + 1}: Computing forward tensor flow...`, 20, 70);
+        }
+        traceOutput.innerHTML = `• <b>Model ${type.toUpperCase()}:</b> Advancing step ${this.currentStep + 1} through network activations.`;
         this.currentStep++;
-        traceOutput.innerHTML = `• <b>Model ${type.toUpperCase()}:</b> Stepping through active forward propagation...`;
       };
       advanceStep();
     }
 
-    // Step button click
-    stepBtn.onclick = () => {
-      advanceStep();
-    };
+    stepBtn.onclick = () => advanceStep();
 
-    // Reset button click
     resetBtn.onclick = () => {
       if (this.timer) {
         clearInterval(this.timer);
@@ -576,7 +622,6 @@ export class NeuralSimElement extends HTMLElement {
       this.initModel(type);
     };
 
-    // Auto-Play toggle
     playBtn.onclick = () => {
       if (this.isPlaying) {
         clearInterval(this.timer);
@@ -586,9 +631,7 @@ export class NeuralSimElement extends HTMLElement {
       } else {
         this.isPlaying = true;
         playBtn.innerText = "⏸ Pause";
-        this.timer = setInterval(() => {
-          advanceStep();
-        }, 850);
+        this.timer = setInterval(() => advanceStep(), 900);
       }
     };
   }

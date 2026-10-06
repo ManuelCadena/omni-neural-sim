@@ -25,12 +25,14 @@
     }
     header {
       max-width: 1200px;
-      margin: 0 auto 24px auto;
+      margin: 0 auto 20px auto;
       border-bottom: 1px solid #1E293B;
       padding-bottom: 16px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
     }
     .badge {
       background: var(--teal);
@@ -44,35 +46,57 @@
     }
     h1 { font-size: 1.8rem; margin-top: 6px; }
     p.subtitle { color: var(--text-muted); font-size: 0.95rem; }
-    .tabs {
-      display: flex;
-      gap: 10px;
+    .header-right { text-align: right; }
+    .header-tag { font-size: 0.85rem; color: var(--text-muted); }
+    .header-code { background: #1E293B; color: #38BDF8; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-family: monospace; }
+    
+    .course-section {
       max-width: 1200px;
-      margin: 0 auto 20px auto;
+      margin: 0 auto 16px auto;
+      background: #0F172A;
+      border: 1px solid #1E293B;
+      border-radius: 10px;
+      padding: 12px 16px;
     }
-    .tab-btn {
+    .course-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #38BDF8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .week-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .week-btn {
       background: #1E293B;
-      color: var(--text-muted);
+      color: #CBD5E1;
       border: 1px solid #334155;
-      padding: 10px 18px;
-      border-radius: 8px;
-      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
-    .tab-btn.active {
+    .week-btn:hover {
+      background: #334155;
+      color: #FFF;
+    }
+    .week-btn.active {
       background: var(--teal);
-      color: #fff;
+      color: #FFF;
       border-color: var(--teal);
+      font-weight: 600;
+      box-shadow: 0 0 10px rgba(15, 139, 141, 0.4);
     }
+
     main {
       max-width: 1200px;
       margin: 0 auto;
-    }
-    .grid-models {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
     }
     footer {
       max-width: 1200px;
@@ -83,9 +107,6 @@
       border-top: 1px solid #1E293B;
       padding-top: 16px;
     }
-    .header-right { text-align: right; }
-    .header-tag { font-size: 0.85rem; color: var(--text-muted); }
-    .header-code { background: #1E293B; color: #38BDF8; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; }
   </style>
   <script type="module" src="/src/index.ts"></script>
 </head>
@@ -94,24 +115,57 @@
     <div>
       <span class="badge">Harvard CSCI E-89 & E-89b SOTA</span>
       <h1>OmniNeuralSim</h1>
-      <p class="subtitle">Universal Pedagogical Simulator for Multilayer Perceptrons, CNNs, LSTMs, and Transformers</p>
+      <p class="subtitle">Universal Pedagogical Deep Learning Simulator for all Harvard Syllabus Topics</p>
     </div>
     <div class="header-right">
       <span class="header-tag">Self-Contained Client-Side Web Component</span><br>
-      <code class="header-code">&lt;neural-sim model="cnn"&gt;</code>
+      <code class="header-code">&lt;neural-sim model="cnn" course="CSCI E-89"&gt;</code>
     </div>
   </header>
 
-  <div class="tabs">
-    <button class="tab-btn active" onclick="switchModel('cnn')">1. Convolutional Net (CNN & MNIST)</button>
-    <button class="tab-btn" onclick="switchModel('lstm')">2. Recurrent Cell (LSTM & Gates)</button>
-    <button class="tab-btn" onclick="switchModel('transformer')">3. Attention Mechanism (Transformer)</button>
-    <button class="tab-btn" onclick="switchModel('mlp')">4. Multi-Layer Perceptron (Backprop & XOR)</button>
+  <!-- Track 1: Natural Language Processing -->
+  <div class="course-section">
+    <div class="course-title">Track 1: Natural Language Processing (CSCI E-89b) — Weekly Syllabus Simulators</div>
+    <div class="week-pills" id="pills-nlp">
+      <button class="week-btn" onclick="selectSim('mlp', 'W1: Neural Networks & Backprop', 'CSCI E-89b NLP', this)">W1: MLP Backprop</button>
+      <button class="week-btn" onclick="selectSim('lstm', 'W2: RNN, LSTM & GRU Gates', 'CSCI E-89b NLP', this)">W2: LSTM & GRU</button>
+      <button class="week-btn active" onclick="selectSim('cnn', 'W3: Tokenization & Conv2D MNIST', 'CSCI E-89b NLP', this)">W3: CNN & MNIST</button>
+      <button class="week-btn" onclick="selectSim('ngrams', 'W4: N-grams & Bag of Words', 'CSCI E-89b NLP', this)">W4: N-grams & BoW</button>
+      <button class="week-btn" onclick="selectSim('embeddings', 'W5: TF-IDF & Word2Vec Vector Space', 'CSCI E-89b NLP', this)">W5: Word2Vec Space</button>
+      <button class="week-btn" onclick="selectSim('autoencoder', 'W6: Autoencoders & t-SNE Manifold', 'CSCI E-89b NLP', this)">W6: Autoencoders</button>
+      <button class="week-btn" onclick="selectSim('lda', 'W7: Topic Modeling (LDA & NMF)', 'CSCI E-89b NLP', this)">W7: LDA Topics</button>
+      <button class="week-btn" onclick="selectSim('stm', 'W8: Structural Topic Models (STM)', 'CSCI E-89b NLP', this)">W8: STM Covariates</button>
+      <button class="week-btn" onclick="selectSim('classification', 'W9: Text Classification & Softmax', 'CSCI E-89b NLP', this)">W9: Classification</button>
+      <button class="week-btn" onclick="selectSim('ner', 'W10: Named Entity Recognition (BIO)', 'CSCI E-89b NLP', this)">W10: NER Tagging</button>
+      <button class="week-btn" onclick="selectSim('gan', 'W11: GANs & CRF Sequence Models', 'CSCI E-89b NLP', this)">W11: GANs & CRF</button>
+      <button class="week-btn" onclick="selectSim('transformer', 'W12: Transformers & Self-Attention', 'CSCI E-89b NLP', this)">W12: Attention Matrix</button>
+    </div>
+  </div>
+
+  <!-- Track 2: Advanced Deep Learning -->
+  <div class="course-section">
+    <div class="course-title">Track 2: Advanced Deep Learning (CSCI E-89) — Weekly Syllabus Simulators</div>
+    <div class="week-pills" id="pills-dl">
+      <button class="week-btn" onclick="selectSim('mlp', 'W1: Feedforward & Analytical Backprop', 'CSCI E-89 Deep Learning', this)">W1: Feedforward</button>
+      <button class="week-btn" onclick="selectSim('classification', 'W2: Multi-Class & Regularization', 'CSCI E-89 Deep Learning', this)">W2: Regularization</button>
+      <button class="week-btn" onclick="selectSim('optimizers', 'W3: Loss Landscapes & Optimizers', 'CSCI E-89 Deep Learning', this)">W3: Optimizers (Adam)</button>
+      <button class="week-btn" onclick="selectSim('classification', 'W4: Image Classification Basics', 'CSCI E-89 Deep Learning', this)">W4: Decision Surfaces</button>
+      <button class="week-btn" onclick="selectSim('cnn', 'W5: Conv2D, Pooling & Feature Maps', 'CSCI E-89 Deep Learning', this)">W5: Conv2D Features</button>
+      <button class="week-btn" onclick="selectSim('autoencoder', 'W6: Autoencoders & Bottlenecks', 'CSCI E-89 Deep Learning', this)">W6: Latent Bottleneck</button>
+      <button class="week-btn" onclick="selectSim('transfer-learning', 'W7: Transfer Learning & Fine-tuning', 'CSCI E-89 Deep Learning', this)">W7: Transfer Learning</button>
+      <button class="week-btn" onclick="selectSim('gan', 'W8: Generative Adversarial Networks', 'CSCI E-89 Deep Learning', this)">W8: GAN Minimax</button>
+      <button class="week-btn" onclick="selectSim('text-cnn', 'W9: 1D Convolutions for Sequences', 'CSCI E-89 Deep Learning', this)">W9: Text CNN (1D)</button>
+      <button class="week-btn" onclick="selectSim('rnn', 'W10: Recurrent Networks & Unrolling', 'CSCI E-89 Deep Learning', this)">W10: RNN Unrolling</button>
+      <button class="week-btn" onclick="selectSim('lstm', 'W11: Long Short-Term Memory Gating', 'CSCI E-89 Deep Learning', this)">W11: LSTM Memory</button>
+      <button class="week-btn" onclick="selectSim('transformer', 'W12: Modern Transformer Architectures', 'CSCI E-89 Deep Learning', this)">W12: Self-Attention</button>
+      <button class="week-btn" onclick="selectSim('optimizers', 'W13: Deep Optimization & Schedules', 'CSCI E-89 Deep Learning', this)">W13: Schedulers</button>
+      <button class="week-btn" onclick="selectSim('transformer', 'W14: Deep Learning Research Synthesis', 'CSCI E-89 Deep Learning', this)">W14: AI Synthesis</button>
+    </div>
   </div>
 
   <main>
     <div id="sim-container">
-      <neural-sim model="cnn"></neural-sim>
+      <neural-sim model="cnn" course="CSCI E-89b NLP" title="W3: Tokenization & Conv2D MNIST"></neural-sim>
     </div>
   </main>
 
@@ -121,11 +175,11 @@
   </footer>
 
   <script>
-    function switchModel(type) {
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      event.target.classList.add('active');
+    function selectSim(model, title, course, btnEl) {
+      document.querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
+      btnEl.classList.add('active');
       const container = document.getElementById('sim-container');
-      container.innerHTML = `<neural-sim model="${type}"></neural-sim>`;
+      container.innerHTML = `<neural-sim model="${model}" course="${course}" title="${title}"></neural-sim>`;
     }
   </script>
 </body>

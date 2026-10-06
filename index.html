@@ -83,6 +83,9 @@
       border-top: 1px solid #1E293B;
       padding-top: 16px;
     }
+    .header-right { text-align: right; }
+    .header-tag { font-size: 0.85rem; color: var(--text-muted); }
+    .header-code { background: #1E293B; color: #38BDF8; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; }
   </style>
   <script type="module" src="/src/index.ts"></script>
 </head>
@@ -93,9 +96,9 @@
       <h1>OmniNeuralSim</h1>
       <p class="subtitle">Universal Pedagogical Simulator for Multilayer Perceptrons, CNNs, LSTMs, and Transformers</p>
     </div>
-    <div style="text-align:right;">
-      <span style="font-size:0.85rem; color:var(--text-muted);">Self-Contained Client-Side Web Component</span><br>
-      <code style="background:#1E293B; color:#38BDF8; padding:3px 8px; border-radius:4px; font-size:0.8rem;">&lt;neural-sim model="cnn"&gt;</code>
+    <div class="header-right">
+      <span class="header-tag">Self-Contained Client-Side Web Component</span><br>
+      <code class="header-code">&lt;neural-sim model="cnn"&gt;</code>
     </div>
   </header>
 
